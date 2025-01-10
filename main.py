@@ -1,6 +1,7 @@
 import pandas as pd
 import csv
 from datetime import datetime
+from data_entry import get_amount, get_date, get_description, get_type
 
 class CSV:
     FILE = "fincance_file.csv"
@@ -28,4 +29,12 @@ class CSV:
             writer.writerow(new_entry)
         print("Entry added succesfully")
     
+def add_line():
+    CSV.create_csv()
+    date = get_date("Please enter date (format DD-MM-YYYY) or press enter to add today's date: ", allow_default=True)
+    type = get_type("Please enter type(I for Income or E for Expense): ")
+    amount = get_amount("Please enter the amount: ")
+    description = get_description("Please write description (optional): ")
+    CSV.add_entry(date, type, amount, description)
 
+add_line()
