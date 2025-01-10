@@ -1,10 +1,8 @@
 from datetime import datetime
+from decimal import Decimal
 
 DATE_FORMAT = "%d-%m-%Y"
-
-TYPES = {"I" : "Income",
-        "E" : "Expense"
-        }
+TYPES = {"I" : "Income", "E" : "Expense"}
 
 def get_date(prompt, allow_default=True):
     date_input = input("Please enter date (format DD-MM-YYYY) or press enter to add today's date: ")
@@ -21,23 +19,25 @@ def get_date(prompt, allow_default=True):
 
 def get_type(prompt):
     type_input = input("Please enter type(I for Income or E for Expense): ").upper()
-    if type in TYPES:
-        return TYPES(type)
+    if type_input in TYPES:
+        return TYPES[type_input]
     else:
         print("Invalid type. Please enter I or E")
-        return get_type
-
+        return get_type(prompt)
 
 
 def get_amount(prompt): 
     try:
         amount_input = float(input("Please enter the amount: "))
-        if amount_input <= 0:
+        decimal_num = Decimal(str(amount_input))
+        rounded_amount = decimal_num.quantize(Decimal('.00'))
+        if rounded_amount <= 0:
             print("Please enter amount higher than 0")
-        return amount_input
+        return rounded_amount
     except ValueError:
         print(ValueError)
-        return get_amount
+        return get_amount(prompt)
+    
 
 def get_description(prompt):
     desc_input = input("Please write description (optional): ")
